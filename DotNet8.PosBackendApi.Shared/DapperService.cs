@@ -37,7 +37,7 @@ public class DapperService
         return result;
     }
 
-    public async Task<(IEnumerable<T1>, IEnumerable<T2>)> QueryMultipleAsync<T1, T2>(string storedProcedure, object parameters = null)
+    public async Task<(IEnumerable<T1>, IEnumerable<T2>)> QueryMultipleAsync<T1, T2>(string storedProcedure, object? parameters = null)
     {
         using IDbConnection db = new SqlConnection(_sqlConnectionStringBuilder.ConnectionString);
         using var multi = await db.QueryMultipleAsync(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
@@ -48,7 +48,7 @@ public class DapperService
         return (result1, result2);
     }
 
-    public async Task<(IEnumerable<T1>, IEnumerable<T2>, IEnumerable<T3>, IEnumerable<T4>, IEnumerable<T5>)> QueryMultipleAsync<T1, T2, T3, T4, T5>(string storedProcedure, object parameters = null)
+    public async Task<(IEnumerable<T1>, IEnumerable<T2>, IEnumerable<T3>, IEnumerable<T4>, IEnumerable<T5>)> QueryMultipleAsync<T1, T2, T3, T4, T5>(string storedProcedure, object? parameters = null)
     {
         using IDbConnection db = new SqlConnection(_sqlConnectionStringBuilder.ConnectionString);
         using var multi = await db.QueryMultipleAsync(storedProcedure, parameters, commandType: CommandType.StoredProcedure);

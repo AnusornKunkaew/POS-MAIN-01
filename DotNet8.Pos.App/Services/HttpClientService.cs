@@ -16,7 +16,7 @@ public class HttpClientService
     public async Task<T> ExecuteAsync<T>(string endpoint, EnumHttpMethod httpMethod, object? requestModel = null)
     {
         HttpResponseMessage? response = null;
-        HttpContent content = null;
+        HttpContent? content = null;
         if (requestModel is not null)
         {
             var json = JsonConvert.SerializeObject(requestModel);
