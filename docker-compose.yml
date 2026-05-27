@@ -1,0 +1,45 @@
+services:
+  pos-db:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pos-db
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Sasa@123"
+      MSSQL_PID: "Express"
+    volumes:
+      - pos-data:/var/opt/mssql
+
+  pos-api:
+    build:
+      context: .
+      dockerfile: DotNet8.PosBackendApi/Dockerfile
+    container_name: pos-api
+    depends_on:
+      - pos-db
+    ports:
+      - "5192:5192"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Production"
+      ASPNETCORE_URLS: "http://+:5192"
+      ConnectionStrings__DbConnection: "Server=pos-db;Database=Pos;User ID=sa;Password=Sasa@123;TrustServerCertificate=True;"
+
+  pos-app:
+    build:
+      context: .
+      dockerfile: DotNet8.Pos.App/Dockerfile
+    container_name: pos-app
+    depends_on:
+      - pos-api
+    ports:
+      - "5048:5048"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Production"
+      ASPNETCORE_URLS: "http://+:5048"
+      ApiBaseUrl: "http://pos-api:5192"
+
+volumes:
+  pos-data:
